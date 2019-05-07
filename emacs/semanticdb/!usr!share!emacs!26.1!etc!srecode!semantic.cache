@@ -1,0 +1,295 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode srecode-template-mode
+      :tags 
+        '( ("mode" variable (:default-value ("default")) nil [847 866])
+            ("comment_start" variable (:default-value ("#")) nil [867 890])
+            ("COPYRIGHT" variable (:default-value ("This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see https://www.gnu.org/licenses/.")) nil [891 1518])
+            ("DOLLAR" variable (:default-value ("$")) nil [1519 1534])
+            ("file" context nil nil [1535 1548])
+            ("copyright" function (:code "{{COPYRIGHT:srecode-comment-prefix}}
+") nil [1549 1615])
+            ("filecomment" function
+               (:code "{{comment_start}} {{FILENAME}} --- {{^}}
+{{comment_prefix}}
+{{comment_prefix}} Copyright (C) {{YEAR}} {{?AUTHOR}}
+{{comment_prefix}}
+{{comment_prefix}} Author: {{AUTHOR}} <{{EMAIL}}>{{#RCS}}
+{{comment_prefix}} X-RCS: {{DOLLAR}}Id{{DOLLAR}}{{/RCS}}
+{{comment_prefix}}
+{{>:copyright}}
+{{comment_end}}
+"
+                :arguments (":file" ":user" ":time"))
+                nil [1616 1964]))          
+      :file "default.srt"
+      :pointmax 1972
+      :fsize 1971
+      :lastmodtime '(23304 15343 0 0)
+      :unmatched-syntax nil)
+    (semanticdb-table "semanticdb-table"
+      :major-mode srecode-template-mode
+      :tags 
+        '( ("escape_start" variable (:default-value ("$")) nil [831 852])
+            ("escape_end" variable (:default-value ("$")) nil [852 871])
+            ("mode" variable (:default-value ("srecode-template-mode")) nil [871 904])
+            ("priority" variable (:default-value ("70")) nil [904 922])
+            ("comment_start" variable (:default-value (";;")) nil [923 947])
+            ("comment_end" variable (:default-value ("")) nil [947 969])
+            ("comment_prefix" variable (:default-value (";;")) nil [969 993])
+            ("SEPARATOR" variable (:default-value ("----")) nil [994 1015])
+            ("DOLLAR" variable (:default-value ("$")) nil [1016 1031])
+            ("file" context nil nil [1032 1045])
+            ("MAJORMODE" prompt
+               (:read srecode-read-major-mode-name
+                :text "Major Mode for templates: ")
+                nil [1046 1126])
+            ("START" prompt
+               (:default "{{"
+                :text "Escape Start Characters: ")
+                nil [1126 1180])
+            ("END" prompt
+               (:default "}}"
+                :text "Escape End Characters: ")
+                nil [1180 1230])
+            ("empty" function
+               (:code "$>:filecomment$
+
+set mode \"$?MAJORMODE$\"
+set escape_start \"$?START$\"
+set escape_end \"$?END$\"
+
+context file
+
+$^$
+
+
+;; end
+"
+                :documentation "Insert a skeleton for a template file."
+                :arguments (":file" ":user" ":time" ":srt"))
+                nil [1231 1441])
+            ("mode-basics" function
+               (:binding "m"
+                :dictionaries (("E" ("NAME" variable (:default-value ("empty :file :user :time")) (reparse-symbol flat-dictionary-entry) [1559 1594]) ("DOC" variable (:default-value ("Fill out an empty file.")) (reparse-symbol flat-dictionary-entry) [1594 1628]) ("KEY" variable (:default-value ("e")) (reparse-symbol flat-dictionary-entry) [1628 1640])) ("C1" ("NAME" variable (:default-value ("declaration")) (reparse-symbol flat-dictionary-entry) [1663 1686])) ("DTF" ("NAME" variable (:default-value ("function :blank :indent")) (reparse-symbol flat-dictionary-entry) [1710 1745]) ("DOC" variable (:default-value ("Template to declare a function.")) (reparse-symbol flat-dictionary-entry) [1745 1787]) ("KEY" variable (:default-value ("f")) (reparse-symbol flat-dictionary-entry) [1787 1799])) ("DTV" ("NAME" variable (:default-value ("variable :blank :indent")) (reparse-symbol flat-dictionary-entry) [1823 1858]) ("DOC" variable (:default-value ("Template to declare a variable.")) (reparse-symbol flat-dictionary-entry) [1858 1900]) ("KEY" variable (:default-value ("v")) (reparse-symbol flat-dictionary-entry) [1900 1912])) ("PR" ("NAME" variable (:default-value ("NAME")) (reparse-symbol flat-dictionary-entry) [1935 1951]) ("PROMPT" variable (:default-value ("Name for declaration: ")) (reparse-symbol flat-dictionary-entry) [1951 1987])))
+                :code "$>:declaration:commentchars$
+
+$<E:declaration:function$
+$ESCAPE_START$>:filecomment$ESCAPE_END$
+$/E$
+
+$>C1:declaration:context$
+
+$>PR:declaration:prompt$
+
+$>DTF:declaration:function$
+$>DTV:declaration:function$
+"
+                :documentation "Fill out a full template including parts for basic new mode stuff."
+                :arguments (":srt"))
+                nil [1442 2217])
+            ("declaration" context nil nil [2219 2239])
+            ("NAME" prompt (:text "Name of new template: ") nil [2240 2277])
+            ("KEY" prompt
+               (:read read-char
+                :text "Key Binding: ")
+                nil [2277 2319])
+            ("function" function
+               (:binding "f"
+                :code "template $?NAME$$#ARG$$NAME$$/ARG$
+\"$DOC$\"
+$SEPARATOR$
+$^$
+$SEPARATOR$
+bind \"$?KEY$\"
+"
+                :documentation "Insert a template block for Srecoder templates."
+                :arguments (":blank"))
+                nil [2320 2499])
+            ("NAME" prompt (:text "Name of new variable: ") nil [2500 2537])
+            ("variable" function
+               (:binding "v"
+                :code "set $?NAME$ \"$^$\"
+"
+                :documentation "Inert a variable."
+                :arguments (":blank"))
+                nil [2538 2620])
+            ("prompt" function
+               (:binding "p"
+                :code "prompt $?NAME$ \"$?PROMPT$\"
+"
+                :documentation "Insert a prompt."
+                :arguments (":blank"))
+                nil [2621 2709])
+            ("priority" function
+               (:code "set priority $^$
+"
+                :documentation "Insert a priority statement."
+                :arguments (":blank"))
+                nil [2710 2793])
+            ("application" function
+               (:code "set application \"$^$\"
+"
+                :documentation "Insert an application statement."
+                :arguments (":blank"))
+                nil [2794 2889])
+            ("context" function
+               (:binding "c"
+                :code "context $NAME$
+"
+                :documentation "Insert a context statement."
+                :arguments (":blank"))
+                nil [2890 2978])
+            ("commentchars" function
+               (:code "set comment_start  \"\"
+set comment_end    \"\"
+set comment_prefix \"\"
+"
+                :documentation "Insert the variables for handling comments."
+                :arguments (":blank"))
+                nil [2979 3130])
+            ("code" context nil nil [3131 3144])
+            ("NAME" prompt
+               (:read srecode-read-variable-name
+                :text "Name of variable: ")
+                nil [3145 3210])
+            ("variable" function
+               (:binding "v"
+                :code "$ESCAPE_START$$?NAME$$ESCAPE_END$
+"
+                :documentation "Insert a variable with completion from the current file."
+                :arguments (":srt"))
+                nil [3211 3346])
+            ("NAME" prompt (:text "Name of macro: ") nil [3347 3377])
+            ("ask" function
+               (:binding "a"
+                :code "$ESCAPE_START$?$?NAME$$ESCAPE_END$
+"
+                :documentation "Insert a prompting variable."
+                :arguments (":srt"))
+                nil [3378 3481])
+            ("comment" function
+               (:binding "c"
+                :code "$ESCAPE_START$!$^$$ESCAPE_END$
+"
+                :arguments (":srt"))
+                nil [3482 3554])
+            ("TEMPLATE" prompt
+               (:read srecode-read-template-name
+                :text "Template to include: ")
+                nil [3555 3627])
+            ("include" function
+               (:binding "i"
+                :code "$ESCAPE_START$>:$?TEMPLATE$$ESCAPE_END$
+"
+                :arguments (":srt"))
+                nil [3628 3709])
+            ("includewrap" function
+               (:binding "w"
+                :code "$ESCAPE_START$<:$?TEMPLATE$$ESCAPE_END$$^$$ESCAPE_START$/$NAME$$ESCAPE_END$
+"
+                :arguments (":srt"))
+                nil [3710 3831])
+            ("point" function
+               (:binding "p"
+                :code "$ESCAPE_START$^$ESCAPE_END$
+"
+                :arguments (":srt"))
+                nil [3832 3899])
+            ("escape-start-quoted" function
+               (:binding "q"
+                :code "$ESCAPE_START$ESCAPE_START$ESCAPE_END$
+"
+                :documentation "Escape Start"
+                :arguments (":srt"))
+                nil [4057 4164])
+            ("escape-end-quoted" function
+               (:binding "e"
+                :code "$ESCAPE_START$ESCAPE_END$ESCAPE_END$
+"
+                :documentation "Escape Start"
+                :arguments (":srt"))
+                nil [4165 4268]))          
+      :file "template.srt"
+      :pointmax 4277
+      :fsize 4276
+      :lastmodtime '(23304 15343 0 0)
+      :unmatched-syntax '((string 4052 . 4055) (BIND 4047 . 4051) (TEMPLATE_BLOCK 3969 . 4042) (string 3922 . 3963) (property 3917 . 3921) (newline 3899 . 3900) (TEMPLATE 3900 . 3908) (SECTION 3909 . 3916)))
+    (semanticdb-table "semanticdb-table"
+      :major-mode srecode-template-mode
+      :tags 
+        '( ("mode" variable (:default-value ("default")) nil [852 871])
+            ("application" variable (:default-value ("document")) nil [872 899])
+            ("declaration" context nil nil [900 920])
+            ("section-comment" function
+               (:code "{{comment_start}} {{?TITLE}}
+{{comment_prefix}}
+{{comment_prefix}} {{^}}
+{{comment_end}}
+"
+                :documentation "A comment occurring in front of a group of declarations."
+                :arguments (":blank" ":indent"))
+                nil [921 1119])
+            ("function-comment" function
+               (:code "{{comment_start}} {{?NAME}} --
+{{DOC:srecode-comment-prefix}}
+{{comment_end}}
+"
+                :documentation "A comment occurring in front of a function."
+                :arguments (":tag" ":indent" ":blank"))
+                nil [1120 1300])
+            ("variable-same-line-comment" function
+               (:code "{{comment_start}} {{?DOC}} {{comment_end}}
+"
+                :documentation "A comment occurring after a variable declaration."
+                :arguments (":tag"))
+                nil [1301 1447])
+            ("group-comment-start" function
+               (:code "{{comment_start}} {{?GROUPNAME}} --
+{{comment_end}}
+"
+                :documentation "A comment occurring in front of a group of declarations."
+                :arguments (":blank" ":indent"))
+                nil [1498 1663])
+            ("group-comment-end" function
+               (:code "{{comment_start}} End {{?GROUPNAME}} {{comment_end}}
+"
+                :documentation "A comment occurring at the end of a group of declarations."
+                :arguments (":indent"))
+                nil [1664 1823])
+            ("classdecl" context nil nil [1870 1888])
+            ("group-comment-start" function
+               (:code "{{>:declaration:group-comment-start}}
+"
+                :documentation "A comment occurring in front of a group of declarations."
+                :arguments (":blank" ":indent"))
+                nil [1889 2040])
+            ("group-comment-end" function
+               (:code "{{>:declaration:group-comment-end}}
+"
+                :documentation "A comment occurring at the end of a group of declarations."
+                :arguments (":indent"))
+                nil [2041 2183]))          
+      :file "doc-default.srt"
+      :pointmax 2191
+      :fsize 2190
+      :lastmodtime '(23304 15343 0 0)
+      :unmatched-syntax nil))
+  :file "!usr!share!emacs!26.1!etc!srecode!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

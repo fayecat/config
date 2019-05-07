@@ -1,0 +1,95 @@
+export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;
+ll
+ls
+rm session_redis.go 
+ls
+cd luyou-helper-release/
+ll
+ls
+cd src
+ls
+cd pages/
+ls
+cd members-invite/
+cd ../members
+ls
+rm \#index.js\# 
+ls -l
+sudo rm \#index.js\# 
+ls
+cd ..
+mkdir teammates-edit
+cd teammates-edit/
+cd luyou_weapp/
+cd src/
+ls
+mkdir components
+cd components/
+ls
+mkdir activity
+cd ../..
+ls
+cd ..
+npm run build:weapp
+ks
+ls
+npm run dev:weapp
+cd ../../
+ls
+cd services/
+;;
+ll
+ls
+cp activity.js order.js
+cd ..
+ls
+cd ../..
+ls
+cd ap
+cd src/api/
+ls
+mv tesing.js testing.js
+ls
+rm media_type_testing_wechat.go 
+cd ../../..
+cd ../..
+ls
+rm -r wxapp2/
+ll
+ls
+ll
+rm news
+ll
+ll
+ls
+rm iferr 
+ls
+rm test.js 
+ll
+ls
+mv resource_enter.go resource_enter_wechat.go
+ll
+cd ..
+rm audio_wechat.go 
+ll
+ls
+mv resource_tmplmsg.go resource_wxmsg.go 
+l
+ls
+ls
+mv payload_wxmsg.go payload_insurance.go
+ls
+rm request.go 
+ll
+ls
+rm index.back.js 
+ls
+cd .
+cd ..
+ls
+cd ..
+ls
+cd components/
+ll
+ls
+rm card.vue 

@@ -1,0 +1,16 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode js2-jsx-mode
+      :tags nil
+      :file "index.js"
+      :pointmax 15335
+      :fsize 16362
+      :lastmodtime '(23558 5692 816545 993000)
+      :unmatched-syntax '((VARIABLE 8 . 12) (BRACE_BLOCK 14 . 44) (VARIABLE 45 . 49) (STRING 50 . 64) (VARIABLE 65 . 71) (BRACE_BLOCK 72 . 86) (VARIABLE 87 . 91) (STRING 92 . 112) (VARIABLE 113 . 119) (BRACE_BLOCK 120 . 193) (VARIABLE 194 . 198) (STRING 199 . 208) (VARIABLE 209 . 215) (VARIABLE 216 . 222) (VARIABLE 223 . 227) (STRING 228 . 248) (VARIABLE 249 . 255) (BRACE_BLOCK 256 . 334) (VARIABLE 335 . 339) (STRING 340 . 361) (VARIABLE 362 . 368) (BRACE_BLOCK 369 . 435) (VARIABLE 436 . 440) (STRING 441 . 463) (VARIABLE 464 . 470) (BRACE_BLOCK 471 . 500) (VARIABLE 501 . 505) (STRING 506 . 531) (VARIABLE 532 . 538) (BRACE_BLOCK 539 . 570) (VARIABLE 571 . 575) (STRING 576 . 598) (VARIABLE 599 . 605) (BRACE_BLOCK 606 . 621) (VARIABLE 622 . 626) (STRING 627 . 649) (VARIABLE 650 . 656) (STRING 657 . 671) (VARIABLE 672 . 677) (VARIABLE 678 . 691) (PAREN_BLOCK 701 . 730))))
+  :file "!home!fayecat!code!moonline!wx_club!src!pages!member-edit!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

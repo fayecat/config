@@ -1,0 +1,16 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode js2-jsx-mode
+      :tags nil
+      :file "activity-date.js"
+      :pointmax 2931
+      :fsize 3145
+      :lastmodtime '(23558 27645 64562 29000)
+      :unmatched-syntax nil))
+  :file "!home!fayecat!code!moonline!wx_helper!src!pages!active-state!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

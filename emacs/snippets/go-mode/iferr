@@ -1,0 +1,7 @@
+# -*- mode: go -*-
+# name: iferr
+# key: iferr
+# --
+if err != nil {
+   $1
+}

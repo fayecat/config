@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: bass_attribute
+# key: base
+# --
+CREATE TABLE base_$1 (
+	   id uuid NOT NULL,
+	   title varchar(32) NOT NULL,
+	   created_at timestamp with time zone NOT NULL DEFAULT 'NOW()',
+	   PRIMARY KEY(id),
+	   UNIQUE(title)
+);
+CREATE INDEX base_$1_title_idx ON base_$1(title);
+
+

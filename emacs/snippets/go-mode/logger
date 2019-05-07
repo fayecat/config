@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: logger
+# key: if
+# --
+if $1 {
+   logger.Error("$2", zap.Error(err))
+   return err
+}

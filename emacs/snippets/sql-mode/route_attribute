@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: route_attribute
+# key: route
+# --
+CREATE TABLE club_category (
+club_id uuid NOT NULL,
+attr_id uuid NOT NULL REFERENCES base_category(id),
+created_at timestamp with time zone NOT NULL DEFAULT 'NOW()',
+PRIMARY KEY(club_id, attr_id)
+);
+CREATE INDEX club_category_club_idx ON club_category(club_id);
+CREATE INDEX club_category_attr_idx ON club_category(attr_id);

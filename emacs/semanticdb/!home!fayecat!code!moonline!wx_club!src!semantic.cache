@@ -1,0 +1,16 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode js2-jsx-mode
+      :tags nil
+      :file "app.js"
+      :pointmax 1247
+      :fsize 1284
+      :lastmodtime '(23551 39659 218642 253000)
+      :unmatched-syntax '((VARIABLE 8 . 12) (BRACE_BLOCK 14 . 27) (VARIABLE 28 . 32) (STRING 33 . 47) (VARIABLE 48 . 54) (VARIABLE 55 . 60) (VARIABLE 61 . 65) (STRING 66 . 81) (VARIABLE 82 . 88) (STRING 89 . 110) (VARIABLE 111 . 117) (VARIABLE 118 . 121) (VARIABLE 122 . 126) (STRING 127 . 143) (VARIABLE 144 . 150) (STRING 151 . 163) (VARIABLE 165 . 170) (VARIABLE 171 . 174) (VARIABLE 175 . 182) (VARIABLE 183 . 192) (BRACE_BLOCK 193 . 1192) (VARIABLE 1194 . 1198) (PAREN_BLOCK 1205 . 1246))))
+  :file "!home!fayecat!code!moonline!wx_club!src!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

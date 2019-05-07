@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: club_attribute
+# key: club
+# --
+CREATE TABLE club_$1 (
+	   club_id uuid NOT NULL,
+	   attr_id uuid NOT NULL REFERENCES base_$1(id),
+	   created_at timestamp with time zone NOT NULL DEFAULT 'NOW()',
+	   PRIMARY KEY(club_id, attr_id)
+);
+CREATE INDEX club_$1_club_idx ON club_$1(club_id);
+CREATE INDEX club_$1_attr_idx ON club_$1(attr_id);
+

@@ -1,0 +1,10 @@
+/sudo:root@fayecati:/etc/modprobe.d/blacklist-nouveau.conf
+/tmp/#!sudo:root@fayecati:!etc!modprobe.d!blacklist-nouveau.conf#
+/sudo:root@fayecati:/etc/modprobe.d/blacklist.conf
+/tmp/#!sudo:root@fayecati:!etc!modprobe.d!blacklist.conf#
+/sudo:root@fayecati:/boot/grub/grub.cfg
+/tmp/#!sudo:root@fayecati:!boot!grub!grub.cfg#
+/home/fayecat/code/:sudo
+/home/fayecat/code/#:sudo#
+/home/fayecat/code/sudo::
+/home/fayecat/code/#sudo::#
