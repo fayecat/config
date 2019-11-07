@@ -152,6 +152,7 @@
 ; 困扰已久的TAB
 (setq-default  tab-width 2)
 (setq js-indent-level 2)
+(setq-default indent-tabs-mode nil)
 ;; 设置主题
 ;; color-theme-modern 来源https://github.com/emacs-jp/replace-colorthemes
 ;;(load-theme 'bharadwaj-slate t t)
@@ -327,6 +328,8 @@
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . js2-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
+(add-to-list 'auto-mode-alist '("\\.ts?\\'" . js-mode))
+
 ;; load Indium from its source code
 (add-to-list 'load-path "~/projects/indium")
 (require 'indium)
@@ -353,7 +356,7 @@
     ("0c5204945ca5cdf119390fe7f0b375e8d921e92076b416f6615bbe1bd5d80c88" "cb39485fd94dabefc5f2b729b963cbd0bac9461000c57eae454131ed4954a8ac" "b8c5adfc0230bd8e8d73450c2cd4044ad7ba1d24458e37b6dec65607fc392980" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "c3c0a3702e1d6c0373a0f6a557788dfd49ec9e66e753fb24493579859c8e95ab" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (company-quickhelp ac-js2 js2-mode yasnippet mark-multiple cider auto-compile slime flycheck-cstyle flycheck emmet-mode auto-complete window-numbering react-snippets vue-mode go-dlv go-mode solarized-theme yaml-mode web-mode use-package neotree markdown-mode magit indium helm go-guru go-autocomplete flymd flycheck-mmark flycheck-golangci-lint exec-path-from-shell dockerfile-mode dash-functional counsel company-web company-go color-theme-modern cnfonts avy-flycheck))))
+    (tss tide typescript-mode company-quickhelp ac-js2 js2-mode yasnippet mark-multiple cider auto-compile slime flycheck-cstyle flycheck emmet-mode auto-complete window-numbering react-snippets vue-mode go-dlv go-mode solarized-theme yaml-mode web-mode use-package neotree markdown-mode magit indium helm go-guru go-autocomplete flymd flycheck-mmark flycheck-golangci-lint exec-path-from-shell dockerfile-mode dash-functional counsel company-web company-go color-theme-modern cnfonts avy-flycheck))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -366,6 +369,7 @@
 (window-numbering-mode 1)
 
 ;;;;slime configure
+(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
 (add-to-list 'load-path "/home/fayecat/.emacs.d/elpa/slime-20190105.2006/")
 (require 'slime)
 (slime-setup '(slime-fancy slime-banner))
