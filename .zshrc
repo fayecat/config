@@ -2,14 +2,17 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/fayecat/.oh-my-zsh"
+export ZSH="/Users/fayecat/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="agnoster"
-ZSH_THEME="steeef"
+# ZSH_THEME="amuse"
+# ZSH_THEME="steeef"
+# ZSH_THEME="fino-time"
+ZSH_THEME="spaceship"
+
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -63,7 +66,7 @@ ZSH_THEME="steeef"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions)
+plugins=(git zsh-autosuggestions autojump zsh-syntax-highlighting)
 setopt no_nomatch
 source $ZSH/oh-my-zsh.sh
 
@@ -96,5 +99,41 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /home/fayecat/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-. /usr/share/autojump/autojump.sh
+source /Users/fayecat/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=/usr/local/bin:$PATH
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/.nodenv/bin:$PATH"
+eval "$(nodenv init -)"
+
+export GOPATH="$HOME/Code/dev/go"
+
+export PATH=$GOPATH/bin:$HOME/Code/dev/flutter/bin:$PATH
+
+export FZF_DEFAULT_COMMAND="fd --exclude={.git,.idea,.sass-cache,node_modules,build} --type f"
+
+alias cdc='cd $HOME/Code/'
+alias flt='flutter'
+alias tnew='tmux new -s'
+alias tls='tmux ls'
+alias td='tmux detach'
+alias ta='tmux attach -t'
+alias tk='tmux kill-session -t'
+alias vim='~/.local/bin/lvim'
+
+source ~/.bash_profile
+
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+# export PATH="$GOROOT/bin:$PATH"
+# export PATH="$PATH:$GOPATH/bin"
+export LC_ALL=en_US.UTF-8
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/
+. "/Users/fayecat/.acme.sh/acme.sh.env"
