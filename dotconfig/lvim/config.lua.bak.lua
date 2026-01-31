@@ -1,47 +1,6 @@
 local keymap = lvim.builtin.which_key.mappings
 local vkeymap = lvim.builtin.which_key.vmappings
 
--- 把 zshenv 里设置的 PATH 全部加进来
-local paths = {
-  "/usr/local/bin",
-  "/opt/homebrew/bin",
-
-  os.getenv("HOME") .. "/.local/bin",
-  os.getenv("HOME") .. "/go/bin",            -- go install 默认路径
-  os.getenv("HOME") .. "/.venv/general/bin", -- Python venv
-  os.getenv("HOME") .. "/.yarn/bin",
-  os.getenv("HOME") .. "/.config/yarn/global/node_modules/.bin",
-  os.getenv("HOME") .. "/.nodenv/bin",
-  os.getenv("HOME") .. "/.nodenv/shims",
-  os.getenv("HOME") .. "/Code/development/flutter/bin",
-  os.getenv("GOENV_ROOT") .. "/bin",
-  os.getenv("GOENV_ROOT") .. "/shims",
-  os.getenv("GOPATH") .. "/bin/darwin_amd64",
-  os.getenv("HOME") .. "/Code/cxla/commands",
-  os.getenv("HOME") .. "/Code/leya/Sparkle-2.7.1/bin",
-  os.getenv("HOME") .. "/.codeium/windsurf/bin",
-
-  os.getenv("PATH"), -- 保留原有 PATH
-}
-
-
-
-vim.env.PATH = table.concat(paths, ":")
-
--- 其他环境变量
-vim.env.ANDROID_HOME = os.getenv("HOME") .. "/Library/Android/sdk"
-vim.env.LC_ALL = "en_US.UTF-8"
-vim.env.SWIFT_EXEC = vim.fn.system("xcrun -f swiftc"):gsub("\n", "") -- 去掉换行符
-vim.env.LUNARVIM_RUNTIME_DIR = os.getenv("LUNARVIM_RUNTIME_DIR") or os.getenv("HOME") .. "/.local/share/lunarvim"
-vim.env.LUNARVIM_CONFIG_DIR = os.getenv("LUNARVIM_CONFIG_DIR") or os.getenv("HOME") .. "/.config/lvim"
-vim.env.LUNARVIM_CACHE_DIR = os.getenv("LUNARVIM_CACHE_DIR") or os.getenv("HOME") .. "/.cache/lvim"
-vim.env.LUNARVIM_BASE_DIR = os.getenv("LUNARVIM_BASE_DIR") or vim.env.LUNARVIM_RUNTIME_DIR .. "/lvim"
-
--- 可选数据库环境变量
-vim.env.CXLA_DB_HOST_DEVELOP = "dev.ec2.cxla.cn"
-vim.env.CXLA_DB_PASSWORD_DEVELOP = "705b6d9f8fc5bac93b3c23d234a23aa3"
-
-
 -- General settings
 lvim.log.level = "warn"
 lvim.format_on_save = true
@@ -59,9 +18,9 @@ lvim.format_on_save = true
 
 vim.wo.wrap = true
 lvim.builtin.bufferline.active = false
-lvim.builtin.telescope.defaults.find_files = {
-  find_command = { "fd", "-t=f", "--hidden", "--exclude", "node_modules" },
-  path_display = { "absolute" },
+lvim.builtin.telescope.defaults.find_files= {
+	find_command = { "fd", "-t=f", "--hidden", "--exclude", "node_modules" },
+	path_display = { "truncate" },
   hidden = true,
   no_ignore = false,
 }
@@ -71,47 +30,23 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = { "node_modules", ".git/"
 
 lvim.builtin.telescope.defaults.dynamic_preview_title = true
 lvim.builtin.telescope.defaults.path_display = { absolute = true }
-lvim.builtin.telescope.defaults.layout_strategy = "bottom_pane"
+lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
 lvim.builtin.telescope.defaults.layout_config = {
-  -- horizontal = {
-  --   prompt_position = "bottom",
-  --   preview_width = 0.5,
-  --   results_width = 0.5,
-  -- },
+  horizontal = {
+    prompt_position = "bottom",
+    preview_width = 0.5,
+    results_width = 0.5,
+  },
   width = 0.9,
-  height = 0.35,
+  height = 0.8,
   preview_cutoff = 120,
 }
 
--- lvim.builtin.telescope.defaults.borderchars = {
--- prompt = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
--- results = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
--- preview = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
--- }
 lvim.builtin.telescope.defaults.borderchars = {
-  prompt  = { "", "", "", "", "", "", "", "" },
-  results = { "", "", "", "", "", "", "", "" },
-  preview = { "", "", "", "", "", "", "", "" },
+  prompt = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+  results = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+  preview = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
 }
-
-lvim.builtin.which_key.setup.window = {
-  border = "none",     -- 去掉边框
-  position = "bottom", -- 可以选择 bottom/top
-  margin = { 1, 1, 1, 1 }, -- 可选
-  padding = { 1, 1, 1, 1 }, -- 可选
-}
-
-
-local lga_actions = require("telescope-live-grep-args.actions")
-lvim.builtin.telescope.setup = {
-  extensions = {
-    live_grep_args = {
-      auto_quoting = true, -- 启用自动引号
-    },
-  },
-}
-
-
 
 vim.cmd [[ set showtabline=0 ]]
 
@@ -129,60 +64,33 @@ lvim.plugins = {
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
   {
-    "kyazdani42/nvim-tree.lua",
+    "kyazdani42/nvim-tree.lua", 
     -- config = function()
     --   require('nvim-tree').setup({ actions = { open_file = { window_picker = { enable = false } } } })
     -- end
   },
-  { "akinsho/bufferline.nvim" },
-  { "hrsh7th/nvim-cmp" },
+  {"akinsho/bufferline.nvim"},
+  {"hrsh7th/nvim-cmp"},
   {
-  'nvim-treesitter/nvim-treesitter',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        ensure_installed = {
-          'lua',
-          'vim',
-          'markdown',
+    'nvim-treesitter/nvim-treesitter',
+    opts = function(_, opts)
+      opts.ignore_install = { 'help'}
+  
+      if type(opts.ensure_installed) == 'table' then
+        vim.list_extend(opts.ensure_installed, {
           'dockerfile',
           'git_config',
           'jsdoc',
           'make',
           'toml',
           'vimdoc',
-        },
-        ignore_install = { 'help' },
-        highlight = { enable = true },
-      })
+        })
+      end
     end,
   },
-  {
-    "kdheepak/lazygit.nvim",
-    lazy = true,
-    cmd = {
-      "LazyGit",
-      "LazyGitConfig",
-      "LazyGitCurrentFile",
-      "LazyGitFilter",
-      "LazyGitFilterCurrentFile",
-    },
-    -- optional for floating window border decoration
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    -- setting the keybinding for LazyGit with 'keys' is recommended in
-    -- order to load the plugin when the command is run for the first time
-    keys = {
-      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-    }
-  },
   -- {"L3MON4D3/LuaSnip"},
-  { "numToStr/Comment.nvim" },
-  { "lewis6991/gitsigns.nvim" },
-  {
-    "nvim-telescope/telescope-live-grep-args.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-  },
+  {"numToStr/Comment.nvim"},
+  {"lewis6991/gitsigns.nvim"},
   {
     "EdenEast/nightfox.nvim",
     lazy = false,
@@ -191,7 +99,7 @@ lvim.plugins = {
       vim.cmd("colorscheme duskfox")
     end
   },
-  { "folke/which-key.nvim" },
+  {"folke/which-key.nvim"},
   -- {"Mofiqul/dracula.nvim"},
   -- {
   --   'projekt0n/github-nvim-theme',
@@ -200,32 +108,28 @@ lvim.plugins = {
   --   priority = 1000, -- make sure to load this before all the other start plugins
   --   config = function()
   --     require('github-theme').setup({})
-
+  
   --     vim.cmd('colorscheme github_dark')
   --   end,
   -- },
   {
     "loctvl842/monokai-pro.nvim",
   },
-  { "catppuccin/nvim", priority = 1000 },
-  { "windwp/nvim-autopairs" },
-  { "tpope/vim-rsi" },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    opts = {
-      enabled = false,
-    },
-  },
-  { "tanvirtin/monokai.nvim" },
+  { "catppuccin/nvim", name = "catppuccin-macchiato", priority = 1000 },
+  {"windwp/nvim-autopairs"},
+  {"tpope/vim-rsi"},
+  {"lukas-reineke/indent-blankline.nvim"},
+  {"tanvirtin/monokai.nvim"},
   -- {
   --   "olimorris/onedarkpro.nvim",
   -- },
   { "navarasu/onedark.nvim" },
-  { "nathom/filetype.nvim" },
-  { "nvim-lua/plenary.nvim" },
-  { "nvim-pack/nvim-spectre" },
-  { "yamatsum/nvim-cursorline" },
-  { "rebelot/kanagawa.nvim" },
+  -- {"ribru17/bamboo.nvim"},
+  {"nathom/filetype.nvim"},
+  {"nvim-lua/plenary.nvim"},
+  {"nvim-pack/nvim-spectre"},
+  {"yamatsum/nvim-cursorline"},
+  {"rebelot/kanagawa.nvim"},
   {
     "folke/trouble.nvim",
     opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -263,11 +167,11 @@ lvim.plugins = {
       },
     },
   },
-  { "dmmulroy/tsc.nvim" },
-  { "romainl/vim-cool" },
+  {"dmmulroy/tsc.nvim"},
+  {"romainl/vim-cool"},
   {
     "gennaro-tedesco/nvim-jqx",
-    event = { "BufReadPost" },
+    event = {"BufReadPost"},
     ft = { "json", "yaml" },
   },
   {
@@ -276,7 +180,7 @@ lvim.plugins = {
     config = function()
       local lspconfig = require('lspconfig')
 
-      -- lspconfig.rust_analyzer.setup {}
+      lspconfig.rust_analyzer.setup {}
       lspconfig.tsserver.setup {}
       lspconfig.clangd.setup({
         filetypes = { "c", "cpp" }
@@ -306,15 +210,15 @@ lvim.plugins = {
           -- Once we've attached, configure the keybindings
           local wk = require('which-key')
           wk.register({
-            K = { vim.lsp.buf.hover, "LSP hover info" },
-            gd = { vim.lsp.buf.definition, "LSP go to definition" },
-            gD = { vim.lsp.buf.declaration, "LSP go to declaration" },
-            gi = { vim.lsp.buf.implementation, "LSP go to implementation" },
-            gr = { vim.lsp.buf.references, "LSP list references" },
-            gs = { vim.lsp.buf.signature_help, "LSP signature help" },
-            gn = { vim.lsp.buf.rename, "LSP rename" },
-            ["[g"] = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
-            ["g]"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
+            K = { vim.lsp.buf.hover, "LSP hover info"},
+            gd = { vim.lsp.buf.definition, "LSP go to definition"},
+            gD = { vim.lsp.buf.declaration, "LSP go to declaration"},
+            gi = { vim.lsp.buf.implementation, "LSP go to implementation"},
+            gr = { vim.lsp.buf.references, "LSP list references"},
+            gs = { vim.lsp.buf.signature_help, "LSP signature help"},
+            gn = { vim.lsp.buf.rename, "LSP rename"},
+            ["[g"] = { vim.diagnostic.goto_prev, "Go to previous diagnostic"},
+            ["g]"] = { vim.diagnostic.goto_next, "Go to next diagnostic"},
           }, {
             mode = 'n',
             silent = true,
@@ -341,9 +245,10 @@ lvim.plugins = {
       --     })
       --   end,
       -- })
+
     end
   },
-  { 'kevinhwang91/nvim-hlslens' },
+  {'kevinhwang91/nvim-hlslens'},
   -- {
   --   "romgrk/nvim-treesitter-context",
   --   lazy = true,
@@ -352,7 +257,7 @@ lvim.plugins = {
   --       require("treesitter-context").setup({
   --           enable = true,
   --           throttle = true,
-  --           max_lines = 0,
+  --           max_lines = 0, 
   --           patterns = {
   --               default = {
   --                   "class",
@@ -373,22 +278,22 @@ lvim.plugins = {
     lazy = true,
     keys = { "gp" },
     config = function()
-      require("goto-preview").setup({
-        width = 100,
-        height = 20,
-        default_mappings = true,
-        debug = false,
-        opacity = nil,
-        post_open_hook = nil,
-        references = {     -- Configure the telescope UI for slowing the references cycling window.
-          telescope = require("telescope.themes").get_dropdown({ hide_preview = false })
-        },
-        -- You can use "default_mappings = true" setup option
-        -- Or explicitly set keybindings
-        -- vim.cmd("nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>")
-        -- vim.cmd("nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
-        -- vim.cmd("nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>")
-      })
+        require("goto-preview").setup({
+            width = 100,
+            height = 20,
+            default_mappings = true,
+            debug = false,
+            opacity = nil,
+            post_open_hook = nil, 
+            references = { -- Configure the telescope UI for slowing the references cycling window.
+              telescope = require("telescope.themes").get_dropdown({ hide_preview = false })
+            },
+            -- You can use "default_mappings = true" setup option
+            -- Or explicitly set keybindings
+            -- vim.cmd("nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>")
+            -- vim.cmd("nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
+            -- vim.cmd("nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>")
+        })
     end,
   },
   {
@@ -396,16 +301,16 @@ lvim.plugins = {
     lazy = true,
     event = { "User FileOpened" },
     config = function()
-      require("nvim-lastplace").setup({
-        lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
-        lastplace_ignore_filetype = {
-          "gitcommit",
-          "gitrebase",
-          "svn",
-          "hgcommit",
-        },
-        lastplace_open_folds = true,
-      })
+        require("nvim-lastplace").setup({
+            lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
+            lastplace_ignore_filetype = {
+                "gitcommit",
+                "gitrebase",
+                "svn",
+                "hgcommit",
+            },
+            lastplace_open_folds = true,
+        })
     end,
   },
   {
@@ -414,13 +319,12 @@ lvim.plugins = {
     lazy = true,
     event = { "User FileOpened" },
     config = function()
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
-      lvim.builtin.treesitter.matchup.enable = true
+        vim.g.matchup_matchparen_offscreen = { method = "popup" }
+        lvim.builtin.treesitter.matchup.enable = true
     end,
-  },
-  { 'mattn/emmet-vim' },
-  { 'airblade/vim-gitgutter' },
-  {
+ },
+ {'airblade/vim-gitgutter'},
+ {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
     config = function()
@@ -433,25 +337,25 @@ lvim.plugins = {
         },
       })
     end,
-  },
-  {
+ },
+ {
     "zbirenbaum/neodim",
     lazy = true,
     event = "LspAttach",
     config = function()
-      require("neodim").setup({
-        alpha = 0.75,
-        blend_color = "#000000",
-        update_in_insert = {
-          enable = true,
-          delay = 100,
-        },
-        hide = {
-          virtual_text = true,
-          signs = false,
-          underline = false,
-        },
-      })
+        require("neodim").setup({
+            alpha = 0.75,
+            blend_color = "#000000",
+            update_in_insert = {
+                enable = true,
+                delay = 100,
+            },
+            hide = {
+                virtual_text = true,
+                signs = false,
+                underline = false,
+            },
+        })
     end,
   },
   -- {"wojciech-kulik/ios-dev-starter-nvim"},
@@ -505,99 +409,141 @@ lvim.plugins = {
   -- },
   {
     "simrat39/symbols-outline.nvim",
+        lazy = true,
+        cmd = { "SymbolsOutline", "SymbolsOutlineOpen", "SymbolsOutlineClose" },
+        config = function()
+            local opts = {
+                highlight_hovered_item = true,
+                show_guides = true,
+                auto_preview = false,
+                position = "right",
+                relative_width = true,
+                width = 25,
+                auto_close = false,
+                show_numbers = false,
+                show_relative_numbers = false,
+                show_symbol_details = true,
+                preview_bg_highlight = "Pmenu",
+                autofold_depth = nil,
+                auto_unfold_hover = true,
+                fold_markers = { "", "" },
+                wrap = false,
+                keymaps = { -- These keymaps can be a string or a table for multiple keys
+                    close = { "<Esc>", "q" },
+                    goto_location = "<Cr>",
+                    focus_location = "o",
+                    hover_symbol = "<C-space>",
+                    toggle_preview = "K",
+                    rename_symbol = "r",
+                    code_actions = "a",
+                    fold = "h",
+                    unfold = "l",
+                    fold_all = "P",
+                    unfold_all = "U",
+                    fold_reset = "Q",
+                },
+                lsp_blacklist = {},
+                symbol_blacklist = {},
+                symbols = {
+                    File = { icon = "", hl = "@text.uri" },
+                    Module = { icon = "", hl = "@namespace" },
+                    Namespace = { icon = "", hl = "@namespace" },
+                    Package = { icon = "", hl = "@namespace" },
+                    Class = { icon = "𝓒", hl = "@type" },
+                    Method = { icon = "ƒ", hl = "@method" },
+                    Property = { icon = "", hl = "@method" },
+                    Field = { icon = "", hl = "@field" },
+                    Constructor = { icon = "", hl = "@constructor" },
+                    Enum = { icon = "", hl = "@type" },
+                    Interface = { icon = "ﰮ", hl = "@type" },
+                    Function = { icon = "", hl = "@function" },
+                    Variable = { icon = "", hl = "@constant" },
+                    Constant = { icon = "", hl = "@constant" },
+                    String = { icon = "𝓐", hl = "@string" },
+                    Number = { icon = "#", hl = "@number" },
+                    Boolean = { icon = "", hl = "@boolean" },
+                    Array = { icon = "", hl = "@constant" },
+                    Object = { icon = "", hl = "@type" },
+                    Key = { icon = "🔐", hl = "@type" },
+                    Null = { icon = "NULL", hl = "@type" },
+                    EnumMember = { icon = "", hl = "@field" },
+                    Struct = { icon = "𝓢", hl = "@type" },
+                    Event = { icon = "🗲", hl = "@type" },
+                    Operator = { icon = "+", hl = "@operator" },
+                    TypeParameter = { icon = "𝙏", hl = "@parameter" },
+                    Component = { icon = "󰡀", hl = "@function" },
+                    Fragment = { icon = "", hl = "@constant" },
+                },
+            }
+            require("symbols-outline").setup(opts)
+        end,
+  },
+  -- {
+  --   "nvim-zh/colorful-winsep.nvim",
+  --   lazy = true,
+  --   event = "WinNew",
+  --   config = function()
+  --       require("colorful-winsep").setup()
+  --   end,
+  -- },
+  {
+    "karb94/neoscroll.nvim",
     lazy = true,
-    cmd = { "SymbolsOutline", "SymbolsOutlineOpen", "SymbolsOutlineClose" },
+    -- event = "WinScrolled",
+    keys = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
     config = function()
-      local opts = {
-        highlight_hovered_item = true,
-        show_guides = true,
-        auto_preview = false,
-        position = "right",
-        relative_width = true,
-        width = 25,
-        auto_close = false,
-        show_numbers = false,
-        show_relative_numbers = false,
-        show_symbol_details = true,
-        preview_bg_highlight = "Pmenu",
-        autofold_depth = nil,
-        auto_unfold_hover = true,
-        fold_markers = { "", "" },
-        wrap = false,
-        keymaps = {         -- These keymaps can be a string or a table for multiple keys
-          close = { "<Esc>", "q" },
-          goto_location = "<Cr>",
-          focus_location = "o",
-          hover_symbol = "<C-space>",
-          toggle_preview = "K",
-          rename_symbol = "r",
-          code_actions = "a",
-          fold = "h",
-          unfold = "l",
-          fold_all = "P",
-          unfold_all = "U",
-          fold_reset = "Q",
-        },
-        lsp_blacklist = {},
-        symbol_blacklist = {},
-        symbols = {
-          File = { icon = "", hl = "@text.uri" },
-          Module = { icon = "", hl = "@namespace" },
-          Namespace = { icon = "", hl = "@namespace" },
-          Package = { icon = "", hl = "@namespace" },
-          Class = { icon = "𝓒", hl = "@type" },
-          Method = { icon = "ƒ", hl = "@method" },
-          Property = { icon = "", hl = "@method" },
-          Field = { icon = "", hl = "@field" },
-          Constructor = { icon = "", hl = "@constructor" },
-          Enum = { icon = "", hl = "@type" },
-          Interface = { icon = "ﰮ", hl = "@type" },
-          Function = { icon = "", hl = "@function" },
-          Variable = { icon = "", hl = "@constant" },
-          Constant = { icon = "", hl = "@constant" },
-          String = { icon = "𝓐", hl = "@string" },
-          Number = { icon = "#", hl = "@number" },
-          Boolean = { icon = "", hl = "@boolean" },
-          Array = { icon = "", hl = "@constant" },
-          Object = { icon = "", hl = "@type" },
-          Key = { icon = "🔐", hl = "@type" },
-          Null = { icon = "NULL", hl = "@type" },
-          EnumMember = { icon = "", hl = "@field" },
-          Struct = { icon = "𝓢", hl = "@type" },
-          Event = { icon = "🗲", hl = "@type" },
-          Operator = { icon = "+", hl = "@operator" },
-          TypeParameter = { icon = "𝙏", hl = "@parameter" },
-          Component = { icon = "󰡀", hl = "@function" },
-          Fragment = { icon = "", hl = "@constant" },
-        },
-      }
-      require("symbols-outline").setup(opts)
+        require("neoscroll").setup({
+            -- All these keys will be mapped to their corresponding default scrolling animation
+            -- mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+            hide_cursor = true,
+            stop_eof = true,
+            use_local_scrolloff = false,
+            respect_scrolloff = false,
+            cursor_scrolls_alone = true,
+            -- quadratic, cubic, quartic, quintic, circular, sine
+            easing_function = "cubic",
+            pre_hook = nil,
+            post_hook = nil,
+        })
+
+        local t = {}
+        t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "50", [['cubic']] } }
+        t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "50", [['cubic']] } }
+        t["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "50", [['cubic']] } }
+        t["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "50", [['cubic']] } }
+        t["<C-y>"] = { "scroll", { "-0.10", "false", "50", [['cubic']] } }
+        t["<C-e>"] = { "scroll", { "0.10", "false", "50", [['cubic']] } }
+        t["zt"] = { "zt", { "100", [['cubic']] } }
+        t["zz"] = { "zz", { "100", [['cubic']] } }
+        t["zb"] = { "zb", { "100", [['cubic']] } }
+
+        require("neoscroll.config").set_mappings(t)
     end,
   },
   {
     'akinsho/flutter-tools.nvim',
     lazy = false,
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      "neovim/nvim-lspconfig",
-      'stevearc/dressing.nvim',   -- optional for vim.ui.select
+        'nvim-lua/plenary.nvim',
+        "neovim/nvim-lspconfig",
+        'stevearc/dressing.nvim', -- optional for vim.ui.select
     },
     config = true,
   },
-  -- {
-  --   "ray-x/go.nvim",
-  --   dependencies = { -- optional packages
-  --     "ray-x/guihua.lua",
-  --     "neovim/nvim-lspconfig",
-  --     "nvim-treesitter/nvim-treesitter",
-  --   },
-  --   config = function()
-  --     require("go").setup()
-  --   end,
-  --   event = { "CmdlineEnter" },
-  --   ft = { "go", 'gomod' },
-  --   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-  -- },
+  {
+    "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
   -- {
   --   "pmizio/typescript-tools.nvim",
   --   dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
@@ -611,9 +557,9 @@ lvim.plugins = {
       "nvim-telescope/telescope.nvim", -- optional
     },
   },
-  { 'iamcco/markdown-preview.nvim' },
+  {'iamcco/markdown-preview.nvim'},
   { "ellisonleao/dotenv.nvim" },
-  { "NvChad/nvim-colorizer.lua" },
+  {"NvChad/nvim-colorizer.lua"},
   -- {
   --   "mikavilpas/yazi.nvim",
   --   cmd = { "Yazi" },
@@ -628,40 +574,66 @@ lvim.plugins = {
       "neovim/nvim-lspconfig"
     }
   },
-  -- {
-  --   "utilyre/barbecue.nvim",
-  --   name = "barbecue",
-  --   version = "*",
-  --   dependencies = {
-  --     "SmiteshP/nvim-navic",
-  --     "nvim-tree/nvim-web-devicons", -- optional dependency
-  --   },
-  --   opts = {
-  --     -- configurations go here
-  --   },
-  -- },
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {
+      -- configurations go here
+    },
+  },
   { "mhinz/vim-startify" },
+  -- {
+  --   "kdheepak/lazygit.nvim",
+  --   lazy = true,
+  --   cmd = {
+  --       "LazyGit",
+  --       "LazyGitConfig",
+  --       "LazyGitCurrentFile",
+  --       "LazyGitFilter",
+  --       "LazyGitFilterCurrentFile",
+  --   },
+  --   -- optional for floating window border decoration
+  --   dependencies = {
+  --       "nvim-lua/plenary.nvim",
+  --   },
+  --   -- setting the keybinding for LazyGit with 'keys' is recommended in
+  --   -- order to load the plugin when the command is run for the first time
+  --   keys = {
+  --       { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+  --   }
+  --   config = function()
+  --     require("lazygit").setup({
+  --       editCommand = function(filename, line_number)
+  --         line_number = tonumber(line_number) or 1
+  --         vim.api.nvim_win_close(0, true)
+  --         vim.api.nvim_command('edit +' .. line_number .. " " .. filename)
+  --       end,
+  --       openCommand = function(filename, line_number)
+  --         line_number = tonumber(line_number) or 1
+  --         vim.api.nvim_win_close(0, true)
+  --         vim.api.nvim_command('edit +' .. line_number .. " " .. filename)
+  --       end,
+  --     })
+  --   end
+  -- },
   {
     "yorickpeterse/nvim-window",
     config = true,
   },
   { "autoim.vim" },
   {
-    'xemptuous/sqlua.nvim',
-    lazy = true,
-    cmd = 'SQLua',
-    config = function() require('sqlua').setup() end
-  },
-  {
     'Exafunction/codeium.vim',
     event = 'BufEnter',
-    config = function()
+    config = function ()
       -- Change '<C-g>' here to any keycode you like.
-      vim.keymap.set('i', '<C-s>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-      vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end,
-        { expr = true, silent = true })
-      vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
-        { expr = true, silent = true })
+      vim.keymap.set('i', '<C-s>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+      vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+      vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
       vim.keymap.set('i', '<C-l>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
     end
   },
@@ -767,7 +739,7 @@ lvim.plugins = {
   --     --     __inherited_from = "copilot",
   --     --     model = "o3-mini",
   --     --   },
-  --     -- },
+  --     -- },  
   --     mappings = {
   --       --- @class AvanteConflictMappings
   --       sidebar = {
@@ -867,156 +839,33 @@ lvim.plugins = {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      local custom_fname = require('lualine.components.filename'):extend()
-      local highlight = require'lualine.highlight'
-      local default_status_colors = { saved = '', modified = '#3B2C30' }
-
-      function custom_fname:init(options)
-        custom_fname.super.init(self, options)
-        self.status_colors = {
-          saved = highlight.create_component_highlight_group(
-            {bg = default_status_colors.saved}, 'filename_status_saved', self.options),
-          modified = highlight.create_component_highlight_group(
-            {bg = default_status_colors.modified}, 'filename_status_modified', self.options),
-        }
-        if self.options.color == nil then self.options.color = '' end
-      end
-
-      function custom_fname:update_status()
-        local data = custom_fname.super.update_status(self)
-        data = highlight.component_format_highlight(vim.bo.modified
-                                                    and self.status_colors.modified
-                                                    or self.status_colors.saved) .. data
-        return data
-      end
-
-      local mode_map = {
-        ['n']    = 'NORMAL',
-        ['no']   = 'O-PENDING',
-        ['nov']  = 'O-PENDING',
-        ['noV']  = 'O-PENDING',
-        ['no�'] = 'O-PENDING',
-        ['niI']  = 'NORMAL',
-        ['niR']  = 'NORMAL',
-        ['niV']  = 'NORMAL',
-        ['nt']   = 'NORMAL',
-        ['v']    = 'VISUAL',
-        ['vs']   = 'VISUAL',
-        ['V']    = 'V-LINE',
-        ['Vs']   = 'V-LINE',
-        ['�']   = 'V-BLOCK',
-        ['�s']  = 'V-BLOCK',
-        ['s']    = 'SELECT',
-        ['S']    = 'S-LINE',
-        ['�']   = 'S-BLOCK',
-        ['i']    = 'INSERT',
-        ['ic']   = 'INSERT',
-        ['ix']   = 'INSERT',
-        ['R']    = 'REPLACE',
-        ['Rc']   = 'REPLACE',
-        ['Rx']   = 'REPLACE',
-        ['Rv']   = 'V-REPLACE',
-        ['Rvc']  = 'V-REPLACE',
-        ['Rvx']  = 'V-REPLACE',
-        ['c']    = 'COMMAND',
-        ['cv']   = 'EX',
-        ['ce']   = 'EX',
-        ['r']    = 'REPLACE',
-        ['rm']   = 'MORE',
-        ['r?']   = 'CONFIRM',
-        ['!']    = 'SHELL',
-        ['t']    = 'TERMINAL',
-      }
-
-      local function my_progress()
-        local ok_total, total = pcall(vim.api.nvim_buf_line_count, 0)
-        if not ok_total or not total or total < 1 then
-          return ''
-        end
-
-        local ok_cur, pos = pcall(vim.api.nvim_win_get_cursor, 0)
-        local current = (ok_cur and pos and pos[1]) and pos[1] or 1
-
-        local ratio = current / total
-        local filled = math.floor(ratio * 10 + 0.5)
-
-        if filled < 0 then filled = 0 end
-        if filled > 10 then filled = 10 end
-
-        local percent = math.floor(ratio * 100)
-      
-        local cells = {}
-        for i = 1, 10 do
-          cells[i] = (i <= filled) and '🐥 ' or '🐣 '
-        end
-        return string.format('%s%3d%%%%', table.concat(cells), percent)
-      end
-
       require('lualine').setup {
         options = {
-          theme = 'catppuccin-mocha',
+          theme = 'catppuccin-macchiato',
           icons_enabled = true,
-          -- component_separators = { left = '', right = '' },
-          -- section_separators = { left = '', right = '' },
-          component_separators = { left = '', right = '' },
-          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
           refresh = {
             statusline = 100,
           },
         },
         sections = {
-          -- lualine_a = { { 'mode', icon = '' } },
-          lualine_a = { {
-            'mode', 
-            fmt = function(res) return res:sub(1,1) end, 
-            -- icon = ''
-            -- icon = '🚀'
-          } },
-          lualine_b = { { 'branch', icon = '' }, 'diff', 'gitsigns_status' },
+          lualine_a = { { 'mode', icon = '' } },
+          lualine_b = { { 'branch', icon = '' }, 'diff', 'diagnostics' },
           -- lualine_c = { { 'filename', file_status = true, path = 2, icon = '' } },
-          -- lualine_c = {
-          --   {
-          --     function()
-          --       return vim.fn.fnamemodify(vim.fn.getcwd(), ':t') -- 获取当前目录名称
-          --     end,
-          --     -- icon = '', -- 可以自定义图标
-          --     icon = '', -- 可以自定义图标
-          --     color = { fg = '#ffcc00', gui = 'bold' }, -- 设置高亮
-          --   },
-          --   { custom_fname, file_status = true, path = 2, icon = '', separator = { right = '' } }
-          -- },
           lualine_c = {
             {
               function()
-                return vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+                return vim.fn.fnamemodify(vim.fn.getcwd(), ':t')  -- 获取当前目录名称
               end,
-              icon = '🐼', -- 文件夹
-              color = { fg = '#89b4fa', gui = 'bold' },
+              icon = '',  -- 可以自定义图标
+              color = { fg = '#ffcc00', gui = 'bold' },  -- 设置高亮
             },
-            {
-              custom_fname,
-              file_status = true,
-              path = 2,
-              -- separator = { right = '' },
-            },
-            'diagnostics',
+            { 'filename', file_status = true, path = 2, icon = '' }
           },
-          lualine_x = { 
-            'encoding',
-            -- {
-            --   'fileformat',
-            --   icons_enabled = false,
-            --   fmt = function(fmt)
-            --     local map = { unix = 'LF', dos = 'CRLF', mac = 'CR' }
-            --     return map[fmt] or fmt
-            --   end,
-            -- },
-            'filetype' 
-          },
-          -- lualine_y = { 'progress' },
-          lualine_y = { my_progress },
-          lualine_z = { { 'location' } }
-          -- lualine_z = { { 'location', icon = '' } }
+          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          lualine_y = { 'progress' },
+          lualine_z = { { 'location', icon = '' } }
         }
       }
     end
@@ -1025,36 +874,7 @@ lvim.plugins = {
     "rose-pine/neovim",
     name = "rose-pine",
   },
-  {
-    'mrcjkb/rustaceanvim',
-    version = '5.26.0', -- Recommended
-    lazy = false,       -- This plugin is already lazy
-  },
-  {
-    "sindrets/diffview.nvim"
-  },
-  {
-    "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",  -- required
-      "sindrets/diffview.nvim", -- optional - Diff integration
-
-      -- Only one of these is needed.
-      "nvim-telescope/telescope.nvim", -- optional
-      "ibhagwan/fzf-lua",              -- optional
-      "echasnovski/mini.pick",         -- optional
-      "folke/snacks.nvim",             -- optional
-    },
-  },
-  {
-		"folke/snacks.nvim",
-		opts = {
-			indent = {
-				enabled = false,
-			},
-		},
-	},
-  { 'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async' },
+  {'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async'},
   -- {
   --   'luukvbaal/statuscol.nvim',
   --   opts = function()
@@ -1093,7 +913,7 @@ lvim.plugins = {
       modes = {
         char = {
           enabled = true,
-          jump_labels = true,  -- 显示提示字母
+          jump_labels = true, -- 显示提示字母
           keys = { "f", "F" }, -- 把这些键绑定给 flash
         },
       },
@@ -1157,10 +977,20 @@ lvim.plugins = {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {}
   },
+  {
+    "akinsho/toggleterm.nvim",
+    config = function()
+      require("toggleterm").setup({
+        open_mapping = [[<C-\>]],
+        direction = "horizontal",
+        size = 15
+      })
+    end
+  },
   -- {
   --   'rmagatti/auto-session',
   --   lazy = false,
-
+  
   --   ---enables autocomplete for opts
   --   ---@module "auto-session"
   --   ---@type AutoSession.Config
@@ -1187,51 +1017,49 @@ require("nvim-navic")
 
 require("filetype").setup({
   overrides = {
-    extensions = {
-      -- Set the filetype of *.pn files to potion
-      pn = "potion",
-      sql = "sql",
-    },
-    literal = {
-      -- Set the filetype of files named "MyBackupFile" to lua
-      MyBackupFile = "lua",
-      ["*.sql"] = nil,
-    },
-    complex = {
-      -- Set the filetype of any full filename matching the regex to gitconfig
-      [".*git/config"] = "gitconfig",     -- Included in the plugin
-    },
+      extensions = {
+          -- Set the filetype of *.pn files to potion
+          pn = "potion",
+      },
+      literal = {
+          -- Set the filetype of files named "MyBackupFile" to lua
+          MyBackupFile = "lua",
+      },
+      complex = {
+          -- Set the filetype of any full filename matching the regex to gitconfig
+          [".*git/config"] = "gitconfig", -- Included in the plugin
+      },
 
-    -- The same as the ones above except the keys map to functions
-    function_extensions = {
-      ["cpp"] = function()
-        vim.bo.filetype = "cpp"
-        -- Remove annoying indent jumping
-        vim.bo.cinoptions = vim.bo.cinoptions .. "L0"
-      end,
-      ["pdf"] = function()
-        vim.bo.filetype = "pdf"
-        -- Open in PDF viewer (Skim.app) automatically
-        vim.fn.jobstart(
-          "open -a skim " .. '"' .. vim.fn.expand("%") .. '"'
-        )
-      end,
-    },
-    function_literal = {
-      Brewfile = function()
-        vim.cmd("syntax off")
-      end,
-    },
-    function_complex = {
-      ["*.math_notes/%w+"] = function()
-        vim.cmd("iabbrev $ $$")
-      end,
-    },
+      -- The same as the ones above except the keys map to functions
+      function_extensions = {
+          ["cpp"] = function()
+              vim.bo.filetype = "cpp"
+              -- Remove annoying indent jumping
+              vim.bo.cinoptions = vim.bo.cinoptions .. "L0"
+          end,
+          ["pdf"] = function()
+              vim.bo.filetype = "pdf"
+              -- Open in PDF viewer (Skim.app) automatically
+              vim.fn.jobstart(
+                  "open -a skim " .. '"' .. vim.fn.expand("%") .. '"'
+              )
+          end,
+      },
+      function_literal = {
+          Brewfile = function()
+              vim.cmd("syntax off")
+          end,
+      },
+      function_complex = {
+          ["*.math_notes/%w+"] = function()
+              vim.cmd("iabbrev $ $$")
+          end,
+      },
 
-    shebang = {
-      -- Set the filetype of files with a dash shebang to sh
-      dash = "sh",
-    },
+      shebang = {
+          -- Set the filetype of files with a dash shebang to sh
+          dash = "sh",
+      },
   },
 })
 
@@ -1242,22 +1070,17 @@ end
 
 require('dotenv').setup({
   enable_on_load = true, -- will load your .env file upon loading a buffer
-  verbose = false,       -- show error notification if .env file is not found and if .env is loaded
+  verbose = false, -- show error notification if .env file is not found and if .env is loaded
 })
 
 require 'colorizer'.setup {
   filetypes = {
     '*',
-    html = { mode = 'foreground', }
+    html = { mode = 'foreground'; }
   },
 }
 
 require('tsc').setup()
-
-require("neogit").setup({
-  graph_style = "unicode",
-  -- auto_close_console = false
-})
 
 require('cmp').setup {
   enabled = true,
@@ -1267,31 +1090,30 @@ require('cmp').setup {
     buffer = true,
     nvim_lsp = true,
     nvim_lua = true,
-  }
+  },
 }
 
 require("flutter-tools").setup {}
 
 require('spectre').setup({
-  color_devicons   = true,
+  color_devicons=true,
   lnum_for_results = true,
-  highlight        = {
+  highlight = {
     ui = "String",
     search = "DiffChange",
     replace = "DiffDelete"
   },
-  line_sep_start   = '┌-----------------------------------------',
-  result_padding   = '¦  ',
-  line_sep         = '└-----------------------------------------',
-  live_update      = true,
-  is_insert_mode   = true
+  line_sep_start = '┌-----------------------------------------',
+  result_padding = '¦  ',
+  line_sep       = '└-----------------------------------------',
+  live_update=true,
+  is_insert_mode=true
 })
 lvim.keys.normal_mode["<leader>sg"] = ":Spectre<CR>"
 function Spectre_search_current_file()
   local spectre = require("spectre")
-  spectre.open_file_search({ select_word = false })
+  spectre.open_file_search({select_word=false})
 end
-
 lvim.keys.normal_mode["<leader>s/"] = ":lua Spectre_search_current_file()<CR>"
 lvim.keys.normal_mode["<leader>r"] = ":e!<CR>"
 
@@ -1310,31 +1132,31 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
   local targetWidth = width - sufWidth
   local curWidth = 0
   for _, chunk in ipairs(virtText) do
-    local chunkText = chunk[1]
-    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-    if targetWidth > curWidth + chunkWidth then
-      table.insert(newVirtText, chunk)
-    else
-      chunkText = truncate(chunkText, targetWidth - curWidth)
-      local hlGroup = chunk[2]
-      table.insert(newVirtText, { chunkText, hlGroup })
-      chunkWidth = vim.fn.strdisplaywidth(chunkText)
-      -- str width returned from truncate() may less than 2nd argument, need padding
-      if curWidth + chunkWidth < targetWidth then
-        suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+      local chunkText = chunk[1]
+      local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+      if targetWidth > curWidth + chunkWidth then
+          table.insert(newVirtText, chunk)
+      else
+          chunkText = truncate(chunkText, targetWidth - curWidth)
+          local hlGroup = chunk[2]
+          table.insert(newVirtText, {chunkText, hlGroup})
+          chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          -- str width returned from truncate() may less than 2nd argument, need padding
+          if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+          end
+          break
       end
-      break
-    end
-    curWidth = curWidth + chunkWidth
+      curWidth = curWidth + chunkWidth
   end
-  table.insert(newVirtText, { suffix, 'MoreMsg' })
+  table.insert(newVirtText, {suffix, 'MoreMsg'})
   return newVirtText
 end
 
 require('ufo').setup({
   fold_virt_text_handler = handler,
   provider_selector = function(bufnr, filetype, buftype)
-    return { 'treesitter', 'indent' }
+      return {'treesitter', 'indent'}
   end
 })
 
@@ -1357,16 +1179,10 @@ vim.api.nvim_set_keymap('n', '<Space>[', ':sp<CR>', { noremap = true, silent = t
 
 -- vim.api.nvim_set_keymap('n', '<Space>.', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', '<Space>,', '<C-t>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Space>.', ":lua require('goto-preview').goto_preview_definition()<CR>",
-  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Space>.', ":lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', '<Space>,', '<C-t>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'D-.', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'D-,', '<C-t>', { noremap = true, silent = true })
-
--- For neovide
--- Normal mode
-vim.keymap.set('n', '<D-.>', function() vim.lsp.buf.definition() end, { noremap = true, silent = true })
-vim.keymap.set('n', '<D-,>', '<C-t>', { noremap = true, silent = true })
 
 -- vim.g.codeium_no_map_tab = 1
 -- vim.g.codeium_disable_bindings = 1
@@ -1422,7 +1238,7 @@ lvim.keys.normal_mode["<leader>se"] = ":Telescope file_browser path=%:p:h select
 
 
 require('gitsigns').setup {
-  signs                        = {
+  signs = {
     add          = { text = '┃' },
     change       = { text = '┃' },
     delete       = { text = '_' },
@@ -1440,29 +1256,29 @@ require('gitsigns').setup {
   -- },
   -- signs_staged_enable = true,
   -- signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  numhl                        = true, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  watch_gitdir                 = {
+  numhl      = true, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir = {
     follow_files = true
   },
-  auto_attach                  = true,
-  attach_to_untracked          = false,
-  current_line_blame           = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts      = {
+  auto_attach = true,
+  attach_to_untracked = false,
+  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
     virt_text = true,
     virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-    delay = 20,
+    delay = 0,
     ignore_whitespace = false,
     virt_text_priority = 100,
     use_focus = true,
   },
   current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
-  sign_priority                = 6,
-  update_debounce              = 100,
-  status_formatter             = nil, -- Use default
-  max_file_length              = 40000, -- Disable if file is longer than this (in lines)
-  preview_config               = {
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  max_file_length = 40000, -- Disable if file is longer than this (in lines)
+  preview_config = {
     -- Options passed to nvim_open_win
     border = 'single',
     style = 'minimal',
@@ -1560,26 +1376,12 @@ vim.api.nvim_set_keymap('n', 'D-S-z', '<C-r>', { noremap = true, silent = true }
 vim.api.nvim_set_keymap('i', 'D-z', '<C-o>u', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', 'D-S-z', '<C-o><C-r>', { noremap = true, silent = true })
 
--- For neovide
--- Normal mode
-vim.keymap.set('n', '<D-z>', 'u', { noremap = true, silent = true })
-vim.keymap.set('n', '<D-S-z>', '<C-r>', { noremap = true, silent = true })
--- Insert mode
-vim.keymap.set('i', '<D-z>', '<C-o>u', { noremap = true, silent = true })
-vim.keymap.set('i', '<D-S-z>', '<C-o><C-r>', { noremap = true, silent = true })
--- 复制到系统剪贴板
-vim.keymap.set({ 'n', 'v' }, '<D-c>', '"+y', { noremap = true, silent = true })
-vim.keymap.set('i', '<D-c>', '<Esc>"+y`i', { noremap = true, silent = true })
--- 粘贴系统剪贴板
-vim.keymap.set({ 'n', 'v' }, '<D-v>', '"+p', { noremap = true, silent = true })
-vim.keymap.set('i', '<D-v>', '<Esc>"+pa', { noremap = true, silent = true })
-
 require("fidget").setup({
   text = {
-    spinner = "dots",   -- 使用点状加载动画
+      spinner = "dots", -- 使用点状加载动画
   },
   window = {
-    blend = 0,   -- 不透明背景
+      blend = 0, -- 不透明背景
   },
 })
 lvim.builtin.which_key.mappings["c"] = {} -- 清除 `<leader>c`
@@ -1645,7 +1447,7 @@ lvim.builtin.which_key.mappings["a"] = {} -- 清除 `<leader>c`
 
 
 -- lvim.colorscheme = "duskfox"
-lvim.colorscheme = "catppuccin-mocha"
+lvim.colorscheme = "catppuccin-macchiato"
 
 -- vim.opt.fillchars = {
 --   vert = " ", -- 垂直分隔符为空格
@@ -1660,8 +1462,7 @@ lvim.colorscheme = "catppuccin-mocha"
 require('nvim-window').setup({
   -- The characters available for hinting windows.
   chars = {
-    'q', 'w', 'e', 'd', 's', 'a', 'r', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'a', 'b', 'c', 'd', 'e',
-    'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+    'q', 'w', 'e', 'd', 's', 'a', 'r', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
     'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
   },
 
@@ -1690,24 +1491,20 @@ vim.cmd [[autocmd VimEnter * Startify]]
 
 vim.g.startify_lists = {
   { type = 'commands', header = { '   Commands' }, indices = { 'f', 'p', 't', 'r', 'c', 'v' } },
-  {
-    type = 'files',
-    header = { '   MRU' },
-    indices = {
-      '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-      'a', 's', 'd', 'g', 'h', 'j', 'k', 'l', ';', '\''
-    }
-  },
+  { type = 'files', header = { '   MRU' }, indices = { 
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+    'a', 's', 'd', 'g', 'h', 'j', 'k', 'l', ';', '\''
+  } },
   -- { type = 'dir', header = { '   Current Directory' }, indices = { 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/' } },
 }
 
 vim.g.startify_commands = {
-  { 'Find File',     ':Telescope find_files' },
-  { 'Projects',      ':Telescope projects' },
-  { 'Find Text',     ':Telescope live_grep' },
-  { 'Recent files',  ':Telescope oldfiles' },
-  { 'Configuration', ':e ~/.config/lvim/config.lua' },
-  { 'Refresh',       ':Startify' },
+  { 'Find File', ':Telescope find_files'},
+  { 'Projects', ':Telescope projects'},
+  { 'Find Text', ':Telescope live_grep'},
+  { 'Recent files', ':Telescope oldfiles'},
+  { 'Configuration', ':e ~/.config/lvim/config.lua'},
+  { 'Refresh', ':Startify'},
 }
 
 vim.g.startify_files_number = 20
@@ -1733,67 +1530,36 @@ require("lspconfig").tsserver.setup({
   root_dir = require("lspconfig.util").root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
 })
 
--- require("lspconfig").sqls.setup{
---   on_attach = on_attach,
---   settings = {
---     sqls = {
---       connections = {
---         {
---           driver = "postgres",
---           dataSourceName = "user:cxla@tcp(127.0.0.1:3306)/your_database",
---         },
---       },
---     },
---   },
--- }
-
 local null_ls = require("null-ls")
 
-
+-- 设置格式化器 & Linter
 null_ls.setup({
-  autostart = true,
-  on_attach = function(client, bufnr)
-    client.server_capabilities.documentFormattingProvider = true
-  end,
-  root_dir = require('lspconfig.util').root_pattern(".git"),
   sources = {
+    -- Prettier 格式化器
     null_ls.builtins.formatting.prettier.with({
-      filetypes = {
-        "javascript",
-        "typescript",
-        "javascriptreact",
-        "typescriptreact",
-        "json",
-        "yaml",
-        "markdown",
-      },
+      filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "yaml", "markdown" },
     }),
 
+    -- ESLint Linter（诊断 + 自动修复）
     null_ls.builtins.diagnostics.eslint.with({
       condition = function(utils)
-        return utils.root_has_file({
-          "eslint.config.mjs",
-          "eslint.config.js",
-          ".eslintrc.js",
-          ".eslintrc.json",
-        })
+        return utils.root_has_file({ "eslint.config.mjs", "eslint.config.js", ".eslintrc.js", ".eslintrc.json" })
       end,
     }),
 
     null_ls.builtins.code_actions.eslint.with({
       condition = function(utils)
-        return utils.root_has_file({
-          "eslint.config.mjs",
-          "eslint.config.js",
-          ".eslintrc.js",
-          ".eslintrc.json",
-        })
+        return utils.root_has_file({ "eslint.config.mjs", "eslint.config.js", ".eslintrc.js", ".eslintrc.json" })
       end,
     }),
-
+    -- Go 语言格式化工具
     null_ls.builtins.formatting.gofmt,
     null_ls.builtins.formatting.goimports,
+    -- Go 语言诊断工具（可选）
+    null_ls.builtins.diagnostics.golangci_lint,
+    -- 格式化器，调用 SwiftFormat
     null_ls.builtins.formatting.swiftformat,
+    -- 诊断工具，调用 SwiftLint
     null_ls.builtins.diagnostics.swiftlint,
   },
 })
@@ -1842,173 +1608,3 @@ require("lspconfig").sourcekit.setup({
 --   end,
 --   group = swift_lsp,
 -- })
-
-
-vim.opt.cmdheight = 1
-
-if vim.g.neovide then
-  vim.keymap.set('n', '<D-s>', ':w<CR>')      -- Save
-  vim.keymap.set('v', '<D-c>', '"+y')         -- Copy
-  vim.keymap.set('n', '<D-v>', '"+P')         -- Paste normal mode
-  vim.keymap.set('v', '<D-v>', '"+P')         -- Paste visual mode
-  vim.keymap.set('c', '<D-v>', '<C-R>+')      -- Paste command mode
-  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
-end
-
--- Allow clipboard copy paste in neovim
-vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true })
-
-lvim.builtin.which_key.mappings["g"]["g"] = nil
-lvim.builtin.which_key.mappings["g"]["d"] = nil
-lvim.builtin.which_key.mappings["s"]["p"] = nil
-lvim.keys.normal_mode["<leader>gf"] = "<cmd>LazyGit<cr>"
-lvim.keys.normal_mode["<leader>gd"] = "<cmd>DiffviewOpen<cr>"
-lvim.keys.normal_mode["<leader>gg"] = "<cmd>Neogit<cr>"
-
-lvim.builtin.which_key.mappings["s"]["p"] = {
-  "<cmd>Telescope projects<CR>", "Projects"
-}
-
-lvim.builtin.which_key.mappings["s"]["z"] = {
-  "<cmd>Telescope projects<CR>", "Projects"
-}
-
--- vim.g.lazygit_floating_window_scaling_factor = 0.9
-vim.g.lazygit_floating_window_border_chars = { '', '', '', '', '', '', '', '' }
-
-
-vim.g.neovide_macos_simple_fullscreen = true
-
--- 行距（Doom 的关键质感之一）
-vim.o.linespace = 4
-
--- 字体柔化（对比度、gamma）
-vim.g.neovide_text_contrast = 0.0
-vim.g.neovide_text_hinting = "none"
-vim.g.neovide_text_gamma = 0.6
-vim.g.neovide_text_contrast = -0.1
-
-
--- 光标动画（克制、Doom 风）
-vim.g.neovide_cursor_animation_length = 0.10
-
--- 平滑滚动
-vim.g.neovide_scroll_animation_length = 0.20
-
-
-lvim.builtin.telescope.on_config_done = function()
-  require("telescope").load_extension("live_grep_args")
-end
-
-
-lvim.builtin.which_key.mappings["s"]["t"] = {
-  "<cmd>Telescope live_grep_args<CR>",
-  "Live Grep (Args)"
-}
-
--- 禁止旧的 VimScript filetype.vim
--- vim.g.do_filetype_lua = 1
--- vim.g.did_load_filetypes = 0 
-
-lvim.keys.normal_mode["<leader>sv"] = function()
-  local path = vim.fn.expand("%:p")        -- 获取当前文件完整路径
-  vim.fn.setreg("+", path)                 -- 复制到系统剪贴板
-  vim.notify("Copied: " .. path, vim.log.levels.INFO, { title = "File Path" })
-end
-
-
-vim.opt.guifont = "Iosevka,Apple Color Emoji:h18:1"
-vim.opt.linespace = 4          -- 行距更宽
-vim.opt.termguicolors = true   -- 启用真彩
-vim.opt.smoothscroll = true    -- 平滑滚动（Neovide 内建）
-vim.g.neovide_refresh_rate = 120
-vim.g.neovide_floating_blur = 0.8
-vim.g.neovide_floating_shadow = true
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function()
-    local cmp = require("cmp")
-    cmp.setup({
-      window = {
-        completion = {
-          border = "none",
-          winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-          scrollbar = false,
-        },
-        documentation = {
-          border = "none",
-          winhighlight = "Normal:CmpDoc,CursorLine:PmenuSel,Search:None",
-        },
-      },
-      experimental = {
-        ghost_text = true,
-      },
-    })
-
-    -- 🎨 Emacs corfu 风格色调（暗主题版）
-    vim.cmd([[
-      " 背景略浅，让层次自然
-      highlight! CmpPmenu guibg=#1f1f2b guifg=#cdd6f4
-      highlight! CmpDoc guibg=#232434 guifg=#cdd6f4
-      highlight! PmenuSel guibg=#38394b guifg=#ffffff gui=bold
-
-      " 移除浮窗线条（避免亮边）
-      highlight! FloatBorder guifg=NONE guibg=#1f1f2b
-      highlight! link NormalFloat CmpPmenu
-    ]])
-
-    -- ✨ 柔和半透明
-    vim.opt.pumblend = 12
-    vim.opt.winblend = 12
-
-    -- 字体与排版优化
-     vim.opt.linespace = 2
-  end,
-})
-
-
-require("catppuccin").setup({
-  flavour = "mocha",
-  color_overrides = {
-    mocha = {
-      base   = "#161A24",
-      mantle = "#181825",
-      crust  = "#11111b",
-      yellow = "#d9c899",
-      green  = "#8bc48b",
-      peach  = "#e3a97a",
-    },
-  },
-  custom_highlights = function(colors)
-    return {
-      ["@number"]   = { fg = colors.yellow },
-      ["@type"]     = { fg = colors.yellow },
-      ["@constant"] = { fg = colors.peach },
-      ["@keyword"]  = { fg = colors.pink },
-      ["@function"] = { fg = colors.mauve },
-      ["@string"]   = { fg = colors.green },
-      ["@comment"]  = { fg = colors.overlay1 },
-      Normal        = { bg = "#161A24" },
-    }
-  end,
-})
-
-vim.cmd.colorscheme("catppuccin")
-vim.api.nvim_set_hl(0, "lualine_a_insert", { bg = "#d9c899", fg = "#161A24" })
-vim.api.nvim_set_hl(0, "lualine_b_insert", { bg = "#161A24", fg = "#d9c899" })
-
-
-
--- 放在 config.lua 顶部附近
-require("todo")
-
--- 全局 toggle：<leader>at
-lvim.keys.normal_mode["<leader>at"] = function()
-  require("todo").toggle()
-end
-
-lvim.builtin.indentlines.active = false
-
